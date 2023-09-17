@@ -7,5 +7,5 @@ extension GameStatusExtension on GameStatus {
     GameStatus.newGame: "Start new voting",
   };
 
-  String? get value => values[this];
+  String get value => values[this]!;
 }

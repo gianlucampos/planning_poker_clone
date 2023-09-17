@@ -14,12 +14,12 @@ class _CardWidgetState extends State<CardWidget> {
   Color _textColor = Colors.blue;
   bool isVoted = false;
 
-  @override
-  void setState(fn) {
-    if(mounted) {
-      super.setState(fn);
-    }
-  }
+  // @override
+  // void setState(fn) {
+  //   if(mounted) {
+  //     super.setState(fn);
+  //   }
+  // }
 
   // @override
   // void initState() {

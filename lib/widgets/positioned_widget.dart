@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
 import 'package:planning_poker_clone/repositories/player_repository.dart';
 import 'package:planning_poker_clone/widgets/player/player_widget.dart';
-import 'package:planning_poker_clone/widgets/table/mesa_widget.dart';
+import 'package:planning_poker_clone/widgets/table/table_widget.dart';
 
 enum Direction { top, bottom, left, right }
 
@@ -53,7 +53,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(children: widgetsLeft),
-                const TableWidget(),
+                TableWidget(),
                 Column(children: widgetsRight),
               ],
             ),
