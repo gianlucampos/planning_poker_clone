@@ -18,7 +18,7 @@ class PlayerWidget extends StatelessWidget {
             CardAnimation(frontElement: _frontCard(), backElement: _backCard()),
             const SizedBox(height: 15),
             Text(
-              player.name!,
+              player.name,
               textScaleFactor: 1,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             )
@@ -37,10 +37,10 @@ class PlayerWidget extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          player.vote!,
+          player.vote ?? '',
           textScaleFactor: 1.5,
           style:
-          const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
         ),
       ),
     );

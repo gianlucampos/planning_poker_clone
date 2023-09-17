@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:planning_poker_clone/controllers/player_controller.dart';
+import 'package:planning_poker_clone/main.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
-import 'package:planning_poker_clone/repositories/player_repository.dart';
 import 'package:planning_poker_clone/widgets/player/player_widget.dart';
 import 'package:planning_poker_clone/widgets/table/table_widget.dart';
 
@@ -21,18 +22,14 @@ class PositionedWidget extends StatefulWidget {
 }
 
 class _PositionedWidgetState extends State<PositionedWidget> {
-  final List<PlayerModel> playersScreen = [];
+  final List<PlayerModel> _playersScreen = [];
+  final PlayerController _playersController = getIt<PlayerController>();
 
   @override
   void initState() {
     super.initState();
     // socketClient.send(destination: '/app/list');
-    // gameProvider.addListener(() {
-    //   if(!this.mounted) return;
-    //   setState(() {
-    loadPlayers();
-    //   });
-    // });
+    _loadPlayersScreen();
   }
 
   @override
@@ -58,7 +55,6 @@ class _PositionedWidgetState extends State<PositionedWidget> {
               ],
             ),
             const SizedBox(height: 50),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: widgetsBottom,
@@ -69,22 +65,15 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     );
   }
 
-  Future<void> loadPlayers() async {
-    final repository = PlayerRepository();
-    final players = await repository.listPlayers();
-    for (var element in players) {
-      addPlayer(element);
+  Future<void> _loadPlayersScreen() async {
+    await _playersController.loadPlayers();
+    for (var element in _playersController.loggedPlayers) {
+      _addPlayerScreen(element);
     }
-    // reset();
-    // gameProvider.players.forEach((player) {
-    //   if (playersScreen.any((p) => p.name == player.name)) return;
-    //   playersScreen.add(player);
-    //   addPlayer(player);
-    // });
   }
 
-  void reset() {
-    playersScreen.clear();
+  void _resetScren() {
+    _playersScreen.clear();
     direction = Direction.top;
     isAdded = false;
     widgetsTop = [];
@@ -93,29 +82,29 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     widgetsRight = [];
   }
 
-  void addPlayer(PlayerModel player) {
-    playersScreen.add(player);
+  void _addPlayerScreen(PlayerModel player) {
+    _playersScreen.add(player);
 
-    buildTop(player);
+    _buildTop(player);
     if (isAdded) {
       isAdded = false;
       return;
     }
-    buildLeft(player);
+    _buildLeft(player);
     if (isAdded) {
       isAdded = false;
       return;
     }
-    buildRight(player);
+    _buildRight(player);
     if (isAdded) {
       isAdded = false;
       return;
     }
-    buildBottom(player);
+    _buildBottom(player);
     isAdded = false;
   }
 
-  void buildTop(PlayerModel player) {
+  void _buildTop(PlayerModel player) {
     if (widgetsTop.length >= 8) return;
 
     if (direction == Direction.top) {
@@ -126,7 +115,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     }
   }
 
-  void buildLeft(PlayerModel player) {
+  void _buildLeft(PlayerModel player) {
     if (direction == Direction.left) {
       widgetsLeft.add(PlayerWidget(player: player));
       direction = widgetsRight.length < 3 ? Direction.right : Direction.bottom;
@@ -135,7 +124,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     }
   }
 
-  void buildRight(PlayerModel player) {
+  void _buildRight(PlayerModel player) {
     if (direction == Direction.right) {
       widgetsRight.add(PlayerWidget(player: player));
       super.setState(() {});
@@ -144,7 +133,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     }
   }
 
-  void buildBottom(PlayerModel player) {
+  void _buildBottom(PlayerModel player) {
     if (widgetsBottom.length >= 8) return;
     if (direction == Direction.bottom) {
       widgetsBottom.add(PlayerWidget(player: player));

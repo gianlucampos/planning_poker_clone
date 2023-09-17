@@ -2,7 +2,9 @@
 
 import 'package:mobx/mobx.dart';
 import 'package:planning_poker_clone/controllers/card_controller.dart';
+import 'package:planning_poker_clone/controllers/player_controller.dart';
 import 'package:planning_poker_clone/controllers/timer_controller.dart';
+import 'package:planning_poker_clone/controllers/vote_controller.dart';
 import 'package:planning_poker_clone/main.dart';
 import 'package:planning_poker_clone/models/game_status.dart';
 
@@ -12,6 +14,8 @@ class GameController = _GameController with _$GameController;
 
 final TimerController _timerController = getIt<TimerController>();
 final CardController _cardController = getIt<CardController>();
+final VoteController _voteController = getIt<VoteController>();
+final PlayerController _playerController = getIt<PlayerController>();
 
 abstract class _GameController with Store {
   @readonly
@@ -39,8 +43,7 @@ abstract class _GameController with Store {
   void controlStatus() {
     switch (gameStatus) {
       case GameStatus.voting:
-        bool allPlayersVoted = true;
-        if (allPlayersVoted) {
+        if (_playerController.allPlayersVoted()) {
           setGameStatus(GameStatus.revealCards);
         }
         break;
@@ -50,7 +53,7 @@ abstract class _GameController with Store {
       case GameStatus.newGame:
         setGameStatus(GameStatus.voting);
         _cardController.setShowFrontSide(false);
-        //     Provider.of<VotoProvider>(context, listen: false).reset();
+        _voteController.setVote(null);
         break;
     }
   }
