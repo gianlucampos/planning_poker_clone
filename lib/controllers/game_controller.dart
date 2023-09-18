@@ -49,6 +49,7 @@ abstract class _GameController with Store {
         break;
       case GameStatus.revealCards:
         _timerController.startTimer();
+        _gameStatus = GameStatus.countingDown;
         break;
       case GameStatus.newGame:
         setGameStatus(GameStatus.voting);

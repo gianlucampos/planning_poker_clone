@@ -1,4 +1,4 @@
-enum GameStatus { voting, revealCards, newGame }
+enum GameStatus { voting, revealCards, newGame, countingDown }
 
 extension GameStatusExtension on GameStatus {
   static const values = {

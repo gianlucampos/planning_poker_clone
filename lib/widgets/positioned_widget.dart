@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:planning_poker_clone/controllers/player_controller.dart';
 import 'package:planning_poker_clone/main.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
+import 'package:planning_poker_clone/widgets/loading_widget.dart';
+import 'package:planning_poker_clone/widgets/player/add_player_modal.dart';
 import 'package:planning_poker_clone/widgets/player/player_widget.dart';
 import 'package:planning_poker_clone/widgets/table/table_widget.dart';
 
@@ -28,7 +31,13 @@ class _PositionedWidgetState extends State<PositionedWidget> {
   @override
   void initState() {
     super.initState();
-    // socketClient.send(destination: '/app/list');
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => const AddPlayerModal(),
+      ),
+    );
     _loadPlayersScreen();
   }
 
@@ -38,30 +47,34 @@ class _PositionedWidgetState extends State<PositionedWidget> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Column(
+        child: LoadingWidget(child: _buildTable()),
+      ),
+    );
+  }
+
+  Column _buildTable() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widgetsTop,
+        ),
+        const SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: widgetsTop,
-            ),
-            const SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(children: widgetsLeft),
-                TableWidget(),
-                Column(children: widgetsRight),
-              ],
-            ),
-            const SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: widgetsBottom,
-            ),
+            Column(children: widgetsLeft),
+            TableWidget(),
+            Column(children: widgetsRight),
           ],
         ),
-      ),
+        const SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widgetsBottom,
+        ),
+      ],
     );
   }
 

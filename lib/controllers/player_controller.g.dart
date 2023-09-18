@@ -45,48 +45,55 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$getLoggedPlayerAsyncAction =
+      AsyncAction('_PlayerController.getLoggedPlayer', context: context);
+
+  @override
+  Future<PlayerModel?> getLoggedPlayer() {
+    return _$getLoggedPlayerAsyncAction.run(() => super.getLoggedPlayer());
+  }
+
+  late final _$logoutPlayerAsyncAction =
+      AsyncAction('_PlayerController.logoutPlayer', context: context);
+
+  @override
+  Future<void> logoutPlayer() {
+    return _$logoutPlayerAsyncAction.run(() => super.logoutPlayer());
+  }
+
+  late final _$setLoggedPlayerAsyncAction =
+      AsyncAction('_PlayerController.setLoggedPlayer', context: context);
+
+  @override
+  Future<void> setLoggedPlayer(PlayerModel newPlayer) {
+    return _$setLoggedPlayerAsyncAction
+        .run(() => super.setLoggedPlayer(newPlayer));
+  }
+
+  late final _$addLoggedPlayerAsyncAction =
+      AsyncAction('_PlayerController.addLoggedPlayer', context: context);
+
+  @override
+  Future<void> addLoggedPlayer(PlayerModel newPlayer) {
+    return _$addLoggedPlayerAsyncAction
+        .run(() => super.addLoggedPlayer(newPlayer));
+  }
+
+  late final _$removeLoggedPlayerAsyncAction =
+      AsyncAction('_PlayerController.removeLoggedPlayer', context: context);
+
+  @override
+  Future<void> removeLoggedPlayer(PlayerModel newPlayer) {
+    return _$removeLoggedPlayerAsyncAction
+        .run(() => super.removeLoggedPlayer(newPlayer));
+  }
+
   late final _$loadPlayersAsyncAction =
       AsyncAction('_PlayerController.loadPlayers', context: context);
 
   @override
   Future<void> loadPlayers() {
     return _$loadPlayersAsyncAction.run(() => super.loadPlayers());
-  }
-
-  late final _$_PlayerControllerActionController =
-      ActionController(name: '_PlayerController', context: context);
-
-  @override
-  void setPlayer(PlayerModel newPlayer) {
-    final _$actionInfo = _$_PlayerControllerActionController.startAction(
-        name: '_PlayerController.setPlayer');
-    try {
-      return super.setPlayer(newPlayer);
-    } finally {
-      _$_PlayerControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addPlayer(PlayerModel newPlayer) {
-    final _$actionInfo = _$_PlayerControllerActionController.startAction(
-        name: '_PlayerController.addPlayer');
-    try {
-      return super.addPlayer(newPlayer);
-    } finally {
-      _$_PlayerControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removePlayer(PlayerModel newPlayer) {
-    final _$actionInfo = _$_PlayerControllerActionController.startAction(
-        name: '_PlayerController.removePlayer');
-    try {
-      return super.removePlayer(newPlayer);
-    } finally {
-      _$_PlayerControllerActionController.endAction(_$actionInfo);
-    }
   }
 
   @override

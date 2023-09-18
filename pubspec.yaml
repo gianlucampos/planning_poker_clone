@@ -12,6 +12,7 @@ dependencies:
   flutter_mobx: ^2.0.6+5
   mobx: ^2.2.0
   get_it: ^7.6.4
+  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:

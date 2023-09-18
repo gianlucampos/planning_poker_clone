@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planning_poker_clone/home_page.dart';
+import 'package:planning_poker_clone/pages/home_page.dart';
 import 'package:planning_poker_clone/models/layout_constrains.dart';
 
 class AppWidget extends StatelessWidget {
@@ -26,9 +26,9 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (_isMobile(constraints)) {
-          return Transform.scale(scale: .7, child: widget);
-        }
+        // if (_isMobile(constraints)) {
+        //   return Transform.scale(scale: .7, child: widget);
+        // }
         return widget;
       },
     );

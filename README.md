@@ -1,9 +1,10 @@
 # planning_poker_clone
 
-Clone of Planning Poker [https://planningpokeronline.com/]
+Clone of Planning Poker [https://planningpokeronline.com/]   
 
-[//]: # (Available at https://gianlucampos.github.io/planning_poker_flutter/#/)
+[//]: # (&#40;Available at https://gianlucampos.github.io/planning_poker_flutter/#/&#41;)
 
+## Flutter Comands
 
-## Comands
-dart run build_runner build --delete-conflicting-outputs
+    dart pub get  
+    dart run build_runner build --delete-conflicting-outputs  
