@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planning_poker_clone/controllers/player_controller.dart';
 import 'package:planning_poker_clone/core/app_text_styles.dart';
+import 'package:planning_poker_clone/exceptions/errors.dart';
 import 'package:planning_poker_clone/main.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
 
@@ -13,10 +14,12 @@ class AddPlayerModal extends StatefulWidget {
 }
 
 class _AddPlayerModalState extends State<AddPlayerModal> {
+  final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
   final PlayerController _playerController = getIt<PlayerController>();
   bool _isSpectador = false;
-  bool _isNotValid = false;
+  bool _isBackendValidationFailed = false;
+  String? _backendErrorMessage;
 
   @override
   void initState() {
@@ -50,17 +53,16 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
                   style: AppTextStyles.title,
                 ),
                 const SizedBox(height: 50),
-                TextField(
-                  controller: _textController,
-                  onTap: () {
-                    setState(() {
-                      _isNotValid = false;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Your display name',
-                    border: const OutlineInputBorder(),
-                    errorText: _getErrorMessage(),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _textController,
+                    decoration: const InputDecoration(
+                      labelText: 'Your display name',
+                      border: OutlineInputBorder(),
+                      // errorText: _getErrorMessage(),
+                    ),
+                    validator: _textValidator,
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -83,14 +85,9 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
-                      super.setState(() {
-                        _isNotValid = _textController.text.trim().isEmpty;
-                        if (_isNotValid) {
-                          return;
-                        }
-                      });
-                      await _playerController.setLoggedPlayer(
-                          PlayerModel(name: _textController.text));
+                      if (!_formKey.currentState!.validate()) return;
+                      await _createPlayer();
+                      if (!_formKey.currentState!.validate()) return;
                       if (context.mounted) Navigator.of(context).pop();
                     },
                     child: Text('Continue to game',
@@ -118,10 +115,27 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
     );
   }
 
-  String? _getErrorMessage() {
-    if (_isNotValid & _textController.text.isEmpty) {
-      return "Please enter a display name!";
+  String? _textValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a display name!';
+    }
+    if (_isBackendValidationFailed) {
+      _isBackendValidationFailed = false;
+      return _backendErrorMessage;
     }
     return null;
+  }
+
+  Future<void> _createPlayer() async {
+    try {
+      await _playerController
+          .setLoggedPlayer(PlayerModel(name: _textController.text));
+      _isBackendValidationFailed = false;
+    } on PlayerAlreadyAdded catch (ex) {
+      super.setState(() {
+        _isBackendValidationFailed = true;
+        _backendErrorMessage = ex.message;
+      });
+    }
   }
 }

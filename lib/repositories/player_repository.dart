@@ -1,3 +1,4 @@
+import 'package:planning_poker_clone/exceptions/errors.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
 
 class PlayerRepository {
@@ -26,7 +27,7 @@ class PlayerRepository {
   //TODO Add player in cache and socket loggedPlayers list
   Future<void> addPlayer(PlayerModel playerModel) async {
     if (_playersMock.contains(playerModel)) {
-      throw Exception('There is already a player with this name');
+      throw PlayerAlreadyAdded('There is already a player with this name');
     }
     _playersMock.add(playerModel);
   }

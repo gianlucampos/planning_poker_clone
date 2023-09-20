@@ -50,8 +50,8 @@ abstract class _PlayerController with Store {
   
   @action
   Future<void> setLoggedPlayer(PlayerModel newPlayer) async {
-    await _cacheRepository.addPlayer(newPlayer);
     await addLoggedPlayer(newPlayer);
+    await _cacheRepository.addPlayer(newPlayer);
   }
   
   @action

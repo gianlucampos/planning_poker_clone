@@ -10,15 +10,18 @@ class TableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double widthAvailable = MediaQuery.of(context).size.width;
+    double widthTable = widthAvailable * 0.3;
+    double widthButton = widthTable * 0.2;
     return Container(
-      width: 550,
+      width: widthTable,
       height: 200,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColorLight,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 150),
+        padding: EdgeInsets.symmetric(vertical: 60, horizontal: widthButton),
         child: TextButton(
           onPressed: gameController.controlStatus,
           child: Container(
@@ -26,22 +29,18 @@ class TableWidget extends StatelessWidget {
               color: Colors.blueGrey,
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
-            child: SizedBox(
-              width: 200,
-              height: 200,
-              child: Center(
-                child: Observer(
-                  builder: (context) {
-                    return Text(
-                      gameController.tableMessage,
-                      textScaleFactor: 1.5,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  }
-                ),
+            child: Center(
+              child: Observer(
+                builder: (context) {
+                  return Text(
+                    gameController.tableMessage,
+                    textScaleFactor: 1.5,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }
               ),
             ),
           ),
