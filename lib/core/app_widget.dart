@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:planning_poker_clone/pages/home_page.dart';
-import 'package:planning_poker_clone/models/layout_constrains.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
@@ -12,34 +11,8 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
-      home: ResponsiveLayout(
-        widget: const HomePage(),
-      ),
+      home: const HomePage(),
     );
-  }
-}
-
-class ResponsiveLayout extends StatelessWidget {
-  final Widget widget;
-  final LayoutConstraints mobile = LayoutConstraints.mobile();
-
-  ResponsiveLayout({super.key, required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // if (_isMobile(constraints)) {
-        //   return Transform.scale(scale: .7, child: widget);
-        // }
-        return widget;
-      },
-    );
-  }
-
-  bool _isMobile(BoxConstraints constraints) {
-    return constraints.maxWidth <= mobile.width ||
-        constraints.maxHeight <= mobile.height;
   }
 }
 
@@ -47,7 +20,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // Override behavior methods and getters like dragDevices
   @override
   Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-  };
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }

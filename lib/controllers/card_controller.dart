@@ -9,7 +9,7 @@ class CardController = _CardController with _$CardController;
 abstract class _CardController with Store {
 
   @readonly
-  bool _showFrontSide = false;
+  bool _showFrontSide = true;
 
   @action
   void setShowFrontSide(bool value) => _showFrontSide = value;

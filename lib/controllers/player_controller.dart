@@ -1,6 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
@@ -17,7 +17,7 @@ abstract class _PlayerController with Store {
 
   _PlayerController({
     required PlayerRepository repository,
-    required cacheRepository,
+    required CacheRepository cacheRepository,
   }) {
     _repository = repository;
     _cacheRepository = cacheRepository;
@@ -39,7 +39,7 @@ abstract class _PlayerController with Store {
   Future<PlayerModel?> getLoggedPlayer() async {
     final logged = await _cacheRepository.getLoggedPlayer();
     _player = logged;
-    if(logged != null) addLoggedPlayer(logged);
+    if (logged != null) addLoggedPlayer(logged);
     return logged;
   }
 
@@ -47,17 +47,16 @@ abstract class _PlayerController with Store {
   Future<void> logoutPlayer() async {
     await _repository.removePlayer(_player!);
   }
-  
+
   @action
   Future<void> setLoggedPlayer(PlayerModel newPlayer) async {
     await addLoggedPlayer(newPlayer);
     await _cacheRepository.addPlayer(newPlayer);
   }
-  
+
   @action
   Future<void> addLoggedPlayer(PlayerModel newPlayer) async {
     await _repository.addPlayer(newPlayer);
-    log('addLoggedPlayer ${DateTime.timestamp()}');
   }
 
   @action
@@ -65,10 +64,12 @@ abstract class _PlayerController with Store {
     await _repository.removePlayer(newPlayer);
   }
 
+  //TODO implement vote update
+
   @action
   Future<void> loadPlayers() async {
+    _loggedPlayers.clear();
     await Future.delayed(const Duration(seconds: 1));
-    log('loadPlayers ${DateTime.timestamp()}');
     final players = await _repository.listLoggedPlayers();
     _loggedPlayers.addAll(players);
   }

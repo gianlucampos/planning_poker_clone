@@ -1,9 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:planning_poker_clone/exceptions/errors.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
 
 class PlayerRepository {
-  static const String urlBase =
-      'https://planning-poker-spring.herokuapp.com/v1/api/players';
+  final DatabaseReference _database = FirebaseDatabase.instance.ref('players');
 
   final _playersMock = [
     PlayerModel(name: 'Gianluca', vote: 'PP'),
@@ -16,12 +18,10 @@ class PlayerRepository {
     PlayerModel(name: 'Geovanni', vote: 'G'),
   ];
 
-  //TODO Get players from a socket channel
   Future<List<PlayerModel>> listLoggedPlayers() async {
-    // final response = await _dio.get(_url_base);
-    // var players = response.data.map((e) => PlayerModel.fromMap(e));
-    // return List<PlayerModel>.from(players);
-    return _playersMock;
+    final playersRef = await _database.get();
+    var players = playersRef.value as List;
+    return players.map((player) => PlayerModel.fromMap(player)).toList();
   }
 
   //TODO Add player in cache and socket loggedPlayers list
@@ -36,4 +36,7 @@ class PlayerRepository {
   Future<void> removePlayer(PlayerModel playerModel) async {
     _playersMock.remove(playerModel);
   }
+
+//TODO implement vote update
+
 }

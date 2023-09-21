@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:planning_poker_clone/controllers/player_controller.dart';
@@ -25,8 +26,8 @@ class PositionedWidget extends StatefulWidget {
 }
 
 class _PositionedWidgetState extends State<PositionedWidget> {
-  final List<PlayerModel> _playersScreen = [];
   final PlayerController _playersController = getIt<PlayerController>();
+  final DatabaseReference _database = FirebaseDatabase.instance.ref('players');
 
   @override
   void initState() {
@@ -39,6 +40,9 @@ class _PositionedWidgetState extends State<PositionedWidget> {
       ),
     );
     _loadPlayersScreen();
+    //Two options TODO implement the solution 2
+    // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
+    // 2 - Put the build logic inside controller and retrieve here with observables
   }
 
   @override
@@ -83,14 +87,16 @@ class _PositionedWidgetState extends State<PositionedWidget> {
   }
 
   Future<void> _loadPlayersScreen() async {
-    await _playersController.loadPlayers();
-    for (var element in _playersController.loggedPlayers) {
-      _addPlayerScreen(element);
-    }
+    _database.onValue.listen((event) async {
+      _resetScren();
+      await _playersController.loadPlayers();
+      for (var element in _playersController.loggedPlayers) {
+        _addPlayerScreen(element);
+      }
+    });
   }
 
   void _resetScren() {
-    _playersScreen.clear();
     direction = Direction.top;
     isAdded = false;
     widgetsTop = [];
@@ -100,8 +106,6 @@ class _PositionedWidgetState extends State<PositionedWidget> {
   }
 
   void _addPlayerScreen(PlayerModel player) {
-    _playersScreen.add(player);
-
     _buildTop(player);
     if (isAdded) {
       isAdded = false;
