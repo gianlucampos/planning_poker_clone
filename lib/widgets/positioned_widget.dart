@@ -10,6 +10,7 @@ import 'package:planning_poker_clone/widgets/loading_widget.dart';
 import 'package:planning_poker_clone/widgets/player/add_player_modal.dart';
 import 'package:planning_poker_clone/widgets/player/player_widget.dart';
 import 'package:planning_poker_clone/widgets/table/table_widget.dart';
+import 'package:universal_html/html.dart';
 
 enum Direction { top, bottom, left, right }
 
@@ -35,6 +36,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
   @override
   void initState() {
     super.initState();
+    window.addEventListener('beforeunload', beforeUnload);
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => showDialog(
         barrierDismissible: false,
@@ -45,7 +47,6 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     //Two options TODO implement the solution 2
     // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
     // 2 - Put the build logic inside controller and retrieve here with observables
-    // _loadPlayersScreen();
     _firebaseStreamUpdate = _database.onValue.listen((event) {
       _loadPlayersScreen();
     });
@@ -96,6 +97,10 @@ class _PositionedWidgetState extends State<PositionedWidget> {
         ],
       ),
     );
+  }
+
+  void beforeUnload(Event e) {
+    _playersController.removeLoggedPlayer();
   }
 
   Future<void> _loadPlayersScreen() async {

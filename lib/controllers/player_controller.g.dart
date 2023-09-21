@@ -83,9 +83,9 @@ mixin _$PlayerController on _PlayerController, Store {
       AsyncAction('_PlayerController.removeLoggedPlayer', context: context);
 
   @override
-  Future<void> removeLoggedPlayer(PlayerModel newPlayer) {
+  Future<void> removeLoggedPlayer() {
     return _$removeLoggedPlayerAsyncAction
-        .run(() => super.removeLoggedPlayer(newPlayer));
+        .run(() => super.removeLoggedPlayer());
   }
 
   late final _$loadPlayersAsyncAction =

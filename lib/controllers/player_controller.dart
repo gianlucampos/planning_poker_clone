@@ -61,8 +61,10 @@ abstract class _PlayerController with Store {
   }
 
   @action
-  Future<void> removeLoggedPlayer(PlayerModel newPlayer) async {
-    await _repository.removePlayer(newPlayer);
+  Future<void> removeLoggedPlayer() async {
+    if (_player != null) {
+      await _repository.removePlayer(_player!);
+    }
   }
 
   @action
