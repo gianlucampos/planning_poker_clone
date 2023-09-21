@@ -1,14 +1,22 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:mobx/mobx.dart';
+import 'package:planning_poker_clone/controllers/player_controller.dart';
+import 'package:planning_poker_clone/main.dart';
+import 'package:planning_poker_clone/repositories/player_repository.dart';
 
 part 'vote_controller.g.dart';
 
 class VoteController = _VoteController with _$VoteController;
 
-// final PlayerController _playerController = getIt<PlayerController>();
+final PlayerController _playerController = getIt<PlayerController>();
 
 abstract class _VoteController with Store {
+  final PlayerRepository _playerRepository;
+
+  _VoteController({required PlayerRepository playerRepository})
+      : _playerRepository = playerRepository;
+
   @readonly
   String? _vote;
 
@@ -17,9 +25,7 @@ abstract class _VoteController with Store {
   @action
   void setVote(String? newVote) {
     _vote = newVote;
-    //TODO implement vote update
-    // _playerController.player.vote! = _vote;
-    //Update player vote in repository
-    //Update player vote in controller
+    String name = _playerController.player!.name;
+    _playerRepository.setPlayerVote(playerName: name, playerVote: _vote);
   }
 }

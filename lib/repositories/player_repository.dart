@@ -5,38 +5,33 @@ import 'package:planning_poker_clone/exceptions/errors.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
 
 class PlayerRepository {
-  final DatabaseReference _database = FirebaseDatabase.instance.ref('players');
-
-  final _playersMock = [
-    PlayerModel(name: 'Gianluca', vote: 'PP'),
-    PlayerModel(name: 'Victor', vote: 'PP'),
-    PlayerModel(name: 'Caio', vote: 'PP'),
-    PlayerModel(name: 'Ricardo', vote: 'P'),
-    PlayerModel(name: 'Bruno', vote: 'P'),
-    PlayerModel(name: 'Bruna', vote: 'P'),
-    PlayerModel(name: 'Renata', vote: 'M'),
-    PlayerModel(name: 'Geovanni', vote: 'G'),
-  ];
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
 
   Future<List<PlayerModel>> listLoggedPlayers() async {
-    final playersRef = await _database.get();
-    var players = playersRef.value as List;
-    return players.map((player) => PlayerModel.fromMap(player)).toList();
+    DataSnapshot playersRef = await _database.child('players').get();
+    var players = playersRef.value as Map;
+    return players.values.map((player) => PlayerModel.fromMap(player)).toList();
   }
 
-  //TODO Add player in cache and socket loggedPlayers list
   Future<void> addPlayer(PlayerModel playerModel) async {
-    if (_playersMock.contains(playerModel)) {
+    //TODO use PlayerController.loggedPlayers instead to spare database request
+    DataSnapshot player = await _database.child('players/${playerModel.name}').get();
+    if (player.exists) {
       throw PlayerAlreadyAdded('There is already a player with this name');
     }
-    _playersMock.add(playerModel);
+    await _database
+        .child('players/${playerModel.name}')
+        .set(playerModel.toMap());
   }
 
-  //TODO Remove player in cache and socket loggedPlayers list
   Future<void> removePlayer(PlayerModel playerModel) async {
-    _playersMock.remove(playerModel);
+    await _database.child('players/${playerModel.name}').remove();
   }
 
-//TODO implement vote update
-
+  Future<void> setPlayerVote({
+    required String playerName,
+    required String? playerVote,
+  }) async {
+    await _database.child('players/$playerName/vote').set(playerVote);
+  }
 }

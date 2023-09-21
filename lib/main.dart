@@ -29,7 +29,11 @@ void setupDI() {
   getIt.registerLazySingleton<CardController>(() => CardController());
   getIt.registerLazySingleton<TimerController>(() => TimerController());
   getIt.registerLazySingleton<GameController>(() => GameController());
-  getIt.registerLazySingleton<VoteController>(() => VoteController());
+  getIt.registerLazySingleton<VoteController>(
+    () => VoteController(
+      playerRepository: PlayerRepository(),
+    ),
+  );
   getIt.registerLazySingleton<PlayerController>(
     () => PlayerController(
       repository: PlayerRepository(),

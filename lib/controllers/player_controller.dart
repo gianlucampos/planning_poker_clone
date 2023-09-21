@@ -64,8 +64,6 @@ abstract class _PlayerController with Store {
     await _repository.removePlayer(newPlayer);
   }
 
-  //TODO implement vote update
-
   @action
   Future<void> loadPlayers() async {
     _loggedPlayers.clear();
