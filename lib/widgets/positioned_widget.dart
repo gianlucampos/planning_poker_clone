@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -28,6 +30,7 @@ class PositionedWidget extends StatefulWidget {
 class _PositionedWidgetState extends State<PositionedWidget> {
   final PlayerController _playersController = getIt<PlayerController>();
   final DatabaseReference _database = FirebaseDatabase.instance.ref('players');
+  late final StreamSubscription<DatabaseEvent> _firebaseStreamUpdate;
 
   @override
   void initState() {
@@ -39,10 +42,19 @@ class _PositionedWidgetState extends State<PositionedWidget> {
         builder: (_) => const AddPlayerModal(),
       ),
     );
-    _loadPlayersScreen();
     //Two options TODO implement the solution 2
     // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
     // 2 - Put the build logic inside controller and retrieve here with observables
+    // _loadPlayersScreen();
+    _firebaseStreamUpdate = _database.onValue.listen((event) {
+      _loadPlayersScreen();
+    });
+  }
+
+  @override
+  void dispose() {
+    _firebaseStreamUpdate.cancel();
+    super.dispose();
   }
 
   @override
@@ -87,13 +99,11 @@ class _PositionedWidgetState extends State<PositionedWidget> {
   }
 
   Future<void> _loadPlayersScreen() async {
-    _database.onValue.listen((event) async {
-      _resetScren();
-      await _playersController.loadPlayers();
-      for (var element in _playersController.loggedPlayers) {
-        _addPlayerScreen(element);
-      }
-    });
+    _resetScren();
+    await _playersController.loadPlayers();
+    for (var element in _playersController.loggedPlayers) {
+      _addPlayerScreen(element);
+    }
   }
 
   void _resetScren() {

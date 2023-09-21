@@ -52,6 +52,7 @@ abstract class _PlayerController with Store {
   Future<void> setLoggedPlayer(PlayerModel newPlayer) async {
     await addLoggedPlayer(newPlayer);
     await _cacheRepository.addPlayer(newPlayer);
+    _player = newPlayer;
   }
 
   @action
@@ -67,7 +68,7 @@ abstract class _PlayerController with Store {
   @action
   Future<void> loadPlayers() async {
     _loggedPlayers.clear();
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
     final players = await _repository.listLoggedPlayers();
     _loggedPlayers.addAll(players);
   }
