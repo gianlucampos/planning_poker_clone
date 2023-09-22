@@ -14,4 +14,4 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /planning_poker_clone/
-          dart-define-from-file: env.prd.json
+      - run: flutter build web --dart-define-from-file=env.prd.json
