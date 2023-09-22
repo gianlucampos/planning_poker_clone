@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:planning_poker_clone/core/app_widget.dart';
 import 'package:get_it/get_it.dart';
@@ -21,6 +22,9 @@ void main() async {
 final GetIt getIt = GetIt.instance;
 
 void setupDI() {
+  getIt.registerLazySingleton<DatabaseReference>(
+    () => FirebaseDatabase.instance.ref(),
+  );
   getIt.registerLazySingleton<PlayerRepository>(() => PlayerRepository());
   getIt.registerLazySingleton<CacheRepository>(() => CacheRepository());
 

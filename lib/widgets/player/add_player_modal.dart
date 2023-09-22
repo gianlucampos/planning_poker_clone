@@ -129,7 +129,7 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
   Future<void> _createPlayer() async {
     try {
       await _playerController
-          .setLoggedPlayer(PlayerModel(name: _textController.text));
+          .setLoggedPlayer(PlayerModel(name: _textController.text.trim()));
       _isBackendValidationFailed = false;
     } on PlayerAlreadyAdded catch (ex) {
       super.setState(() {

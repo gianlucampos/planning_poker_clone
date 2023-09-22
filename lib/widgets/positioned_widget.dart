@@ -30,7 +30,7 @@ class PositionedWidget extends StatefulWidget {
 
 class _PositionedWidgetState extends State<PositionedWidget> {
   final PlayerController _playersController = getIt<PlayerController>();
-  final DatabaseReference _database = FirebaseDatabase.instance.ref('players');
+  final DatabaseReference _database = getIt<DatabaseReference>();
   late final StreamSubscription<DatabaseEvent> _firebaseStreamUpdate;
 
   @override
@@ -47,7 +47,8 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     //Two options TODO implement the solution 2
     // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
     // 2 - Put the build logic inside controller and retrieve here with observables
-    _firebaseStreamUpdate = _database.onValue.listen((event) {
+    _firebaseStreamUpdate =
+        _database.child('players').onValue.listen((DatabaseEvent event) {
       _loadPlayersScreen();
     });
   }
