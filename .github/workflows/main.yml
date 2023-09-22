@@ -10,13 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2 # Only works with v2
-      - run: flutter build web --dart-define-from-file=env.prd.json
-      
       - uses: subosito/flutter-action@v1
+      - uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /planning_poker_clone/
-
-      - name: Publish Gh-Page
-      - uses: bluefireteam/flutter-gh-pages@v7
-
-      
