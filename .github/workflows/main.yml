@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build Dependencies
       - uses: actions/checkout@v3 
       - uses: subosito/flutter-action@v2
       - run: flutter clean
