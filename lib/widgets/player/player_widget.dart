@@ -6,7 +6,6 @@ class PlayerWidget extends StatelessWidget {
   final PlayerModel player;
 
   const PlayerWidget({Key? key, required this.player}) : super(key: key);
-  static const test = String.fromEnvironment("MESSAGING_SENDER_ID");
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +18,9 @@ class PlayerWidget extends StatelessWidget {
             CardAnimation(frontElement: _frontCard(), backElement: _backCard()),
             const SizedBox(height: 15),
             const Text(
-              // player.name,
-              test,
+              player.name,
               textScaleFactor: 1,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             )
           ]),
     );
