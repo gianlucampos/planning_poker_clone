@@ -1,4 +1,4 @@
-name: Gh-Pages
+name: Flutter build and deploy
 
 on:
   push:
@@ -9,9 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2 # Only works with v2
-      - uses: subosito/flutter-action@v1
-      - uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          baseHref: /planning_poker_clone/
-      - run: flutter build web --release --dart-define=API_KEY=${{secrets.API_KEY}} --dart-define=APP_ID=${{secrets.APP_ID}} --dart-define=DATABASE_URL=${{secrets.DATABASE_URL}} --dart-define=STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }} --dart-define=MESSAGING_SENDER_ID=${{ secrets.MESSAGING_SENDER_ID }}
+      - name: Build Dependencies
+      - uses: actions/checkout@v3 
+      - uses: subosito/flutter-action@v2
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build web --release --web-renderer=auto --base-href /planning_poker_clone/ --dart-define=API_KEY=${{secrets.API_KEY}} --dart-define=APP_ID=${{secrets.APP_ID}} --dart-define=DATABASE_URL=${{secrets.DATABASE_URL}} --dart-define=STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }} --dart-define=MESSAGING_SENDER_ID=${{ secrets.MESSAGING_SENDER_ID }} --web-renderer=auto --base-href /planning_poker_clone/ 
+
+      - name: Deploy Gh-Pages
+      - run:  git config user.name github-actions
+      - run:  git config user.email github-actions@github.com
+      - run:  git --work-tree build/web add --all
+      - run:  git commit -m "Automatic deployment by github-actions"
+      - run:  git push origin HEAD:gh-pages --force
