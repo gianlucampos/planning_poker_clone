@@ -8,3 +8,8 @@ Clone of Planning Poker [https://planningpokeronline.com/]
 
     dart pub get  
     dart run build_runner build --delete-conflicting-outputs  
+
+## Configs
+To run this webapp you have to:
+-Add a env.local.json
+-Pass the argument in runnwer flutter run --dart-define-from-file=env.local.json
