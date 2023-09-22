@@ -48,7 +48,7 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Choose your display name',
                   style: AppTextStyles.title,
                 ),
@@ -76,7 +76,7 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
                             _isSpectador = value;
                           });
                         }),
-                    Text('Join as spectator', style: AppTextStyles.body),
+                    const Text('Join as spectator', style: AppTextStyles.body),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -90,7 +90,7 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
                       if (!_formKey.currentState!.validate()) return;
                       if (context.mounted) Navigator.of(context).pop();
                     },
-                    child: Text('Continue to game',
+                    child: const Text('Continue to game',
                         style: AppTextStyles.buttonWhite),
                   ),
                 ),
@@ -100,11 +100,11 @@ class _AddPlayerModalState extends State<AddPlayerModal> {
                   children: [
                     TextButton(
                       onPressed: () {},
-                      child: Text('Login', style: AppTextStyles.button),
+                      child: const Text('Login', style: AppTextStyles.button),
                     ),
                     TextButton(
                         onPressed: () {},
-                        child: Text('Sign Up', style: AppTextStyles.button)),
+                        child: const Text('Sign Up', style: AppTextStyles.button)),
                   ],
                 ),
               ],

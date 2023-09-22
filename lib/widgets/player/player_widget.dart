@@ -17,7 +17,7 @@ class PlayerWidget extends StatelessWidget {
           children: [
             CardAnimation(frontElement: _frontCard(), backElement: _backCard()),
             const SizedBox(height: 15),
-            const Text(
+            Text(
               player.name,
               textScaleFactor: 1,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
