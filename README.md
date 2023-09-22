@@ -11,5 +11,5 @@ Clone of Planning Poker [https://planningpokeronline.com/]
 
 ## Configs
 To run this webapp you have to:
--Add a env.local.json
--Pass the argument in runnwer flutter run --dart-define-from-file=env.local.json
+- Add a env.local.json
+- Pass the argument in runner flutter run --dart-define-from-file=config.json
