@@ -5,6 +5,7 @@ extension GameStatusExtension on GameStatus {
     GameStatus.voting: "Pick your cards",
     GameStatus.revealCards: "Reveal cards",
     GameStatus.newGame: "Start new voting",
+    GameStatus.countingDown: "Counting down",
   };
 
   String get value => values[this]!;

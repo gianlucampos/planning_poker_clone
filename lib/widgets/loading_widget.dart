@@ -11,8 +11,8 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO substituir por streamBuilder
     return FutureBuilder(
+      initialData: const [],
       future: loadPlayers(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {

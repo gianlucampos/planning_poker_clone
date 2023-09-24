@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:planning_poker_clone/controllers/game_controller.dart';
 import 'package:planning_poker_clone/controllers/player_controller.dart';
 import 'package:planning_poker_clone/main.dart';
 import 'package:planning_poker_clone/models/player_model.dart';
@@ -30,13 +31,14 @@ class PositionedWidget extends StatefulWidget {
 
 class _PositionedWidgetState extends State<PositionedWidget> {
   final PlayerController _playersController = getIt<PlayerController>();
+  final GameController _gameController = getIt<GameController>();
   final DatabaseReference _database = getIt<DatabaseReference>();
-  late final StreamSubscription<DatabaseEvent> _firebaseStreamUpdate;
+  late final StreamSubscription<DatabaseEvent> _streamPlayersUpdate;
 
   @override
   void initState() {
     super.initState();
-    window.addEventListener('beforeunload', beforeUnload);
+    window.addEventListener('beforeunload', _beforeUnload);
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => showDialog(
         barrierDismissible: false,
@@ -47,7 +49,8 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     //Two options TODO implement the solution 2
     // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
     // 2 - Put the build logic inside controller and retrieve here with observables
-    _firebaseStreamUpdate =
+    _gameController.loadGame();
+    _streamPlayersUpdate =
         _database.child('players').onValue.listen((DatabaseEvent event) {
       _loadPlayersScreen();
     });
@@ -55,7 +58,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
 
   @override
   void dispose() {
-    _firebaseStreamUpdate.cancel();
+    _streamPlayersUpdate.cancel();
     super.dispose();
   }
 
@@ -100,19 +103,19 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     );
   }
 
-  void beforeUnload(Event e) {
+  void _beforeUnload(Event e) {
     _playersController.removeLoggedPlayer();
   }
 
   Future<void> _loadPlayersScreen() async {
-    _resetScren();
+    _resetScreen();
     await _playersController.loadPlayers();
     for (var element in _playersController.loggedPlayers) {
       _addPlayerScreen(element);
     }
   }
 
-  void _resetScren() {
+  void _resetScreen() {
     direction = Direction.top;
     isAdded = false;
     widgetsTop = [];

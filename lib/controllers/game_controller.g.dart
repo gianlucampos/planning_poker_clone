@@ -45,6 +45,14 @@ mixin _$GameController on _GameController, Store {
     });
   }
 
+  late final _$loadGameAsyncAction =
+      AsyncAction('_GameController.loadGame', context: context);
+
+  @override
+  Future<void> loadGame() {
+    return _$loadGameAsyncAction.run(() => super.loadGame());
+  }
+
   late final _$_GameControllerActionController =
       ActionController(name: '_GameController', context: context);
 

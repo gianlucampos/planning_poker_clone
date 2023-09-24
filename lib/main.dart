@@ -10,6 +10,7 @@ import 'package:planning_poker_clone/controllers/timer_controller.dart';
 import 'package:planning_poker_clone/controllers/vote_controller.dart';
 import 'package:planning_poker_clone/core/firebase_options.dart';
 import 'package:planning_poker_clone/repositories/cache_repository.dart';
+import 'package:planning_poker_clone/repositories/game_repository.dart';
 import 'package:planning_poker_clone/repositories/player_repository.dart';
 
 void main() async {
@@ -26,14 +27,17 @@ void setupDI() {
     () => FirebaseDatabase.instance.ref(),
   );
   getIt.registerLazySingleton<PlayerRepository>(() => PlayerRepository());
+  getIt.registerLazySingleton<GameRepository>(() => GameRepository());
   getIt.registerLazySingleton<CacheRepository>(() => CacheRepository());
 
   getIt.registerLazySingleton<CardController>(() => CardController());
   getIt.registerLazySingleton<TimerController>(() => TimerController());
-  getIt.registerLazySingleton<GameController>(() => GameController());
+  getIt.registerLazySingleton<GameController>(
+    () => GameController(repository: GameRepository()),
+  );
   getIt.registerLazySingleton<VoteController>(
     () => VoteController(
-      playerRepository: PlayerRepository(),
+      repository: PlayerRepository(),
     ),
   );
   getIt.registerLazySingleton<PlayerController>(

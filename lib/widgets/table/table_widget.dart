@@ -6,7 +6,7 @@ import 'package:planning_poker_clone/main.dart';
 class TableWidget extends StatelessWidget {
   TableWidget({Key? key}) : super(key: key);
 
-  final GameController gameController = getIt<GameController>();
+  final GameController _gameController = getIt<GameController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +23,23 @@ class TableWidget extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 60, horizontal: widthButton),
         child: TextButton(
-          onPressed: gameController.controlStatus,
+          onPressed: _gameController.controlStatus,
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.blueGrey,
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: Center(
-              child: Observer(
-                builder: (context) {
-                  return Text(
-                    gameController.tableMessage,
-                    textScaleFactor: 1.5,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }
-              ),
+              child: Observer(builder: (context) {
+                return Text(
+                  _gameController.tableMessage,
+                  textScaleFactor: 1.5,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }),
             ),
           ),
         ),

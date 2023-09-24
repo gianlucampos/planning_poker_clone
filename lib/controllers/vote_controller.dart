@@ -14,8 +14,8 @@ final PlayerController _playerController = getIt<PlayerController>();
 abstract class _VoteController with Store {
   final PlayerRepository _playerRepository;
 
-  _VoteController({required PlayerRepository playerRepository})
-      : _playerRepository = playerRepository;
+  _VoteController({required PlayerRepository repository})
+      : _playerRepository = repository;
 
   @readonly
   String? _vote;
