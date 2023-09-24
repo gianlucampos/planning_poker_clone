@@ -33,7 +33,6 @@ abstract class _GameController with Store {
         _database.child('game/status').onValue.listen((DatabaseEvent event) {
       final gameStatus =
           EnumUtils.valueOf(GameStatus.values, event.snapshot.value.toString());
-      if (_gameStatus == gameStatus) return;
       setGameStatus(gameStatus);
       controlStatus();
     });

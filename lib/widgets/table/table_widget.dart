@@ -23,7 +23,7 @@ class TableWidget extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 60, horizontal: widthButton),
         child: TextButton(
-          onPressed: _gameController.controlStatus,
+          onPressed: _gameController.loadGame,
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.blueGrey,
