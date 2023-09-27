@@ -10,6 +10,7 @@ class PlayerRepository {
 
   Future<List<PlayerModel>> listLoggedPlayers() async {
     DataSnapshot playersRef = await _database.child('players').get();
+    if(!playersRef.exists) return [];
     var players = playersRef.value as Map;
     return players.values.map((player) => PlayerModel.fromMap(player)).toList();
   }

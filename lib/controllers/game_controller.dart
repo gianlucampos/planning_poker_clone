@@ -33,8 +33,7 @@ abstract class _GameController with Store {
         _database.child('game/status').onValue.listen((DatabaseEvent event) {
       final gameStatus =
           EnumUtils.valueOf(GameStatus.values, event.snapshot.value.toString());
-      setGameStatus(gameStatus);
-      controlStatus();
+         _gameStatus = gameStatus;
     });
   }
 
@@ -84,7 +83,7 @@ abstract class _GameController with Store {
 
   @action
   Future<void> loadGame() async {
-    setGameStatus(await _repository.getGameStatus());
+    _gameStatus = await _repository.getGameStatus();
   }
 
   void dispose() async {

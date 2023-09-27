@@ -50,8 +50,7 @@ class _PositionedWidgetState extends State<PositionedWidget> {
     // 1 - Put a listanable here and then setState((){ _loadPlayersScreen()})
     // 2 - Put the build logic inside controller and retrieve here with observables
     _gameController.loadGame();
-    _streamPlayersUpdate =
-        _database.child('players').onValue.listen((DatabaseEvent event) {
+    _streamPlayersUpdate = _database.child('players').onValue.listen((_) {
       _loadPlayersScreen();
     });
   }
