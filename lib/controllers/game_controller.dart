@@ -31,9 +31,11 @@ abstract class _GameController with Store {
     _repository = repository;
     _streamGameUpdate =
         _database.child('game/status').onValue.listen((DatabaseEvent event) {
-      final gameStatus =
-          EnumUtils.valueOf(GameStatus.values, event.snapshot.value.toString());
-         _gameStatus = gameStatus;
+      final gameStatus = EnumUtils.valueOf(
+        GameStatus.values,
+        event.snapshot.value.toString(),
+      );
+      setGameStatus(gameStatus);
     });
   }
 
@@ -53,7 +55,6 @@ abstract class _GameController with Store {
     if (_gameStatus != GameStatus.countingDown) {
       _tableMessage = newGameStatus.value;
     }
-    _repository.setGameStatus(gameStatus);
   }
 
   @action
@@ -61,12 +62,16 @@ abstract class _GameController with Store {
     _tableMessage = newTableMessage;
   }
 
+  void changeGameStatusServer(GameStatus gameStatus) {
+    _repository.setGameStatus(gameStatus);
+  }
+
   @action
   void controlStatus() {
     switch (gameStatus) {
       case GameStatus.voting:
         if (_playerController.allPlayersVoted()) {
-          setGameStatus(GameStatus.revealCards);
+          changeGameStatusServer(GameStatus.revealCards);
         }
         break;
       case GameStatus.revealCards:
@@ -74,7 +79,7 @@ abstract class _GameController with Store {
         _gameStatus = GameStatus.countingDown;
         break;
       case GameStatus.newGame:
-        setGameStatus(GameStatus.voting);
+        changeGameStatusServer(GameStatus.voting);
         _cardController.setShowFrontSide(false);
         _voteController.setVote(null);
         break;
