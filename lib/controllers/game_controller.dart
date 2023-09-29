@@ -91,6 +91,9 @@ abstract class _GameController with Store {
         _timerController.startTimer();
         _gameStatus = GameStatus.countingDown;
         break;
+      case GameStatus.countingDown:
+        changeGameStatusServer(GameStatus.newGame);
+        break;
       case GameStatus.newGame:
         changeGameStatusServer(GameStatus.voting);
         _cardController.setShowFrontSide(false);

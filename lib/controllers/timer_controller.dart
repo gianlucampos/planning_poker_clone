@@ -34,7 +34,7 @@ abstract class _TimerController with Store {
     if (_seconds == 0) {
       timer.cancel();
       _cardController.setShowFrontSide(true);
-      _gameController.changeGameStatusServer(GameStatus.newGame);
+      _gameController.setGameStatus(GameStatus.newGame);
       return;
     }
     _gameController.setTableMessage(_seconds.toString());
