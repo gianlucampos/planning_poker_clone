@@ -79,17 +79,6 @@ mixin _$GameController on _GameController, Store {
   }
 
   @override
-  void controlStatus() {
-    final _$actionInfo = _$_GameControllerActionController.startAction(
-        name: '_GameController.controlStatus');
-    try {
-      return super.controlStatus();
-    } finally {
-      _$_GameControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 

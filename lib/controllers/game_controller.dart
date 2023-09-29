@@ -36,6 +36,7 @@ abstract class _GameController with Store {
         event.snapshot.value.toString(),
       );
       setGameStatus(gameStatus);
+      controlStatusApp();
     });
   }
 
@@ -66,8 +67,20 @@ abstract class _GameController with Store {
     _repository.setGameStatus(gameStatus);
   }
 
-  @action
-  void controlStatus() {
+  void controlStatusApp() {
+    switch (gameStatus) {
+      case GameStatus.revealCards:
+        _timerController.startTimer();
+        _gameStatus = GameStatus.countingDown;
+        break;
+      case GameStatus.newGame:
+        _cardController.setShowFrontSide(false);
+        _voteController.setVote(null);
+        break;
+    }
+  }
+
+  void controlStatusFirebase() {
     switch (gameStatus) {
       case GameStatus.voting:
         if (_playerController.allPlayersVoted()) {
