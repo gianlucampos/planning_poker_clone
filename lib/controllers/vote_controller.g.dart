@@ -42,6 +42,17 @@ mixin _$VoteController on _VoteController, Store {
   }
 
   @override
+  void resetVotes() {
+    final _$actionInfo = _$_VoteControllerActionController.startAction(
+        name: '_VoteController.resetVotes');
+    try {
+      return super.resetVotes();
+    } finally {
+      _$_VoteControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 

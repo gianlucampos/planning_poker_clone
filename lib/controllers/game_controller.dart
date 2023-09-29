@@ -74,8 +74,9 @@ abstract class _GameController with Store {
         _gameStatus = GameStatus.countingDown;
         break;
       case GameStatus.newGame:
+      case GameStatus.voting:
         _cardController.setShowFrontSide(false);
-        _voteController.setVote(null);
+        _voteController.resetVotes();
         break;
     }
   }
@@ -97,7 +98,7 @@ abstract class _GameController with Store {
       case GameStatus.newGame:
         changeGameStatusServer(GameStatus.voting);
         _cardController.setShowFrontSide(false);
-        _voteController.setVote(null);
+        _voteController.resetVotes();
         break;
     }
   }

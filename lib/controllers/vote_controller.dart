@@ -25,7 +25,14 @@ abstract class _VoteController with Store {
   @action
   void setVote(String? newVote) {
     _vote = newVote;
+    if (_playerController.player == null) return;
     String name = _playerController.player!.name;
     _playerRepository.setPlayerVote(playerName: name, playerVote: _vote);
+  }
+
+  @action
+  void resetVotes() {
+    _vote = null;
+    _playerRepository.resetVotes();
   }
 }
