@@ -21,6 +21,7 @@ class PlayerRepository {
         await _database.child('players/${playerModel.name}').get();
     if (player.exists) {
       throw PlayerAlreadyAdded('There is already a player with this name');
+      //TODO handle better this exception
     }
     await _database
         .child('players/${playerModel.name}')
