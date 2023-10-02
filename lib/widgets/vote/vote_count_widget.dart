@@ -6,30 +6,26 @@ class VoteCountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 130,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Wrap(
-          alignment: WrapAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        Column(
           children: [
-            Column(
+            const Text('Agreement', textScaleFactor: 1.5),
+            const SizedBox(height: 15),
+            Wrap(
+              alignment: WrapAlignment.center,
               children: [
-                const Text('Agreement ', textScaleFactor: 2),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    CardVoteWidget(vote: 'PP'),
-                    CardVoteWidget(vote: 'P'),
-                    CardVoteWidget(vote: 'M'),
-                    CardVoteWidget(vote: 'G'),
-                  ],
-                ),
+                CardVoteWidget(vote: 'PP'),
+                CardVoteWidget(vote: 'P'),
+                CardVoteWidget(vote: 'M'),
+                CardVoteWidget(vote: 'G'),
               ],
             ),
+            const SizedBox(height: 30),
           ],
         ),
-      ),
+      ],
     );
   }
 }

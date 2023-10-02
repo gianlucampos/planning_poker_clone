@@ -12,12 +12,13 @@ class CardVoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (_voteCount() == 0) return Container();
     return Column(children: [
       _buildBarCount(),
       _buildCard(),
       Observer(
         builder: (context) {
-          return Text('${_voteCount()} vote(s)');
+          return Text('${_voteCount()} vote(s)', textScaleFactor: 1.2);
         },
       )
     ]);
@@ -25,16 +26,16 @@ class CardVoteWidget extends StatelessWidget {
 
   Container _buildBarCount() {
     return Container(
-      height: 150,
-      width: 30,
+      height: 50,
+      width: 10,
       decoration: BoxDecoration(
-        border: Border.all(width: 3),
+        border: Border.all(width: 1),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: RotatedBox(
         quarterTurns: -1,
         child: LinearProgressIndicator(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.black12,
             value: _votePercent(),
             valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1A2935))),
       ),
@@ -45,8 +46,8 @@ class CardVoteWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
-        height: 120,
-        width: 75,
+        height: 80,
+        width: 45,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: const Color(0xFF1A2935), width: 3),
@@ -55,7 +56,7 @@ class CardVoteWidget extends StatelessWidget {
         child: Center(
           child: Text(
             vote,
-            textScaleFactor: 1.8,
+            textScaleFactor: 1.5,
             style: const TextStyle(
               color: Color(0xFF1A2935),
               fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class CardVoteWidget extends StatelessWidget {
 
   double _votePercent() {
     if (_playerController.loggedPlayers.isEmpty) return 0;
-    if( _voteCount() == 0) return 0;
-    return  _voteCount() / _playerController.loggedPlayers.length;
+    if (_voteCount() == 0) return 0;
+    return _voteCount() / _playerController.loggedPlayers.length;
   }
 }
